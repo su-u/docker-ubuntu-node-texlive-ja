@@ -1,8 +1,9 @@
+#su1101/ubuntu-node-texlive-llmk
 FROM su1101/ubuntu-node
 
 LABEL maintainer="doraTeX <taylorkgb [at] gmail.com>"
 
-ENV TL_VERSION      2019
+ENV TL_VERSION      2020
 ENV TL_PATH         /usr/local/texlive
 ENV PATH            ${TL_PATH}/bin/x86_64-linux:/bin:${PATH}
 
@@ -17,6 +18,7 @@ RUN apt-get update && \
     # for tlmgr
     perl-modules-5.28 \
     # for XeTeX
+    texlive-luatex \
     fontconfig && \
     # Clean caches
     apt-get autoremove -y && \
