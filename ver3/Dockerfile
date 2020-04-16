@@ -1,5 +1,7 @@
 FROM su1101/ubuntu-node
 
+ENV DEBIAN_FRONTEND=noninteractive
+
 # PATH
 ENV TEXLIVE_PATH /usr/local/texlive
 ENV FONT_PATH ${TEXLIVE_PATH}/texmf-local/fonts
@@ -14,7 +16,8 @@ RUN apt-get update && \
     gnupg \
     perl-modules-5.28 \
     fontconfig \
-    musl-dev && \
+    musl-dev \
+    texlive-latex-extra && \
     mkdir /tmp/install-tl-unx && \
     wget -qO- http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz | \
     tar -xz -C /tmp/install-tl-unx --strip-components=1 && \
