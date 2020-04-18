@@ -1,8 +1,12 @@
-#ubuntu-node-texlive-llmk-haranoaji:lastest
+#ubuntu-node-texlive-haranoaji:lastest
 FROM su1101/ubuntu-node:latest
 
 MAINTAINER Futa HIRAKOBA
 ENV DEBIAN_FRONTEND=noninteractive
+
+# PATH
+ENV TEXLIVE_PATH /usr/local/texlive
+ENV FONT_PATH ${TEXLIVE_PATH}/texmf-local/fonts
 
 RUN apt-get update && \
     apt-get install -y \
@@ -21,23 +25,13 @@ RUN apt-get update && \
 RUN tlmgr init-usertree
 RUN kanji-config-updmap-sys ipaex
 
-# Set up fonts and llmk
-RUN \
-    # Run cjk-gs-integrate
-      cjk-gs-integrate --cleanup --force && \
-      cjk-gs-integrate --force && \
-    # Copy CMap: 2004-{H,V}
-      kanji-config-updmap-sys --jis2004 haranoaji && \
-    # Re-index LuaTeX font database
-      luaotfload-tool -u -f && \
-    git clone https://github.com/trueroad/HaranoAjiFonts.git && \
+WORKDIR /tmp
+
+RUN git clone https://github.com/trueroad/HaranoAjiFonts.git && \
     mkdir -p "${FONT_PATH}/opentype/haranoaji" && \
     cp -p ./HaranoAjiFonts/*.otf "${FONT_PATH}/opentype/haranoaji/" && \
     rm -rf ./HaranoAjiFonts && \
-    mktexlsr && \
-    # Install llmk
-      wget -q -O /usr/local/bin/llmk https://raw.githubusercontent.com/wtsnjp/llmk/master/llmk.lua && \
-      chmod +x /usr/local/bin/llmk
+    mktexlsr
 
 WORKDIR /workdir
 
