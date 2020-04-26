@@ -1,4 +1,4 @@
-#su110/node-lualatex-haranoaji-llmk:latest
+#su1101/node-lualatex-haranoaji-llmk:latest
 FROM node:14-alpine
 
 # PATH
@@ -33,7 +33,7 @@ RUN apk upgrade --update && \
       "option_src 0" \
       > /tmp/install-tl-unx/texlive.profile && \
     /tmp/install-tl-unx/install-tl -profile /tmp/install-tl-unx/texlive.profile && \
-    tlmgr install collection-latexextra collection-langjapanese collection-fontsrecommended && \
+    tlmgr install collection-latexextra collection-langjapanese collection-fontsrecommended latexmk && \
     rm -rf /tmp/install-tl-unx && \
     apk del --purge .texlive-deps && \
     # Install llmk
@@ -44,7 +44,7 @@ RUN apk upgrade --update && \
     mkdir -p "${FONT_PATH}/opentype/haranoaji" && \
     cp -p ./HaranoAjiFonts/*.otf "${FONT_PATH}/opentype/haranoaji/" && \
     rm -rf ./HaranoAjiFonts && \
-    mktexls
+    mktexlsr
 
 WORKDIR /workdir
 
